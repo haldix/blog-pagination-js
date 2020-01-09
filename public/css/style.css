@@ -46,6 +46,7 @@ li:last-child {
 }
 
 .btn-pagination {
+  display: none;
   color: red;
   border: solid 2px red;
   border-radius: 3px;
@@ -58,4 +59,8 @@ li:last-child {
 .btn-pagination:active {
   background: red;
   color: #fff;
+}
+
+.show {
+  display: inline-block;
 }

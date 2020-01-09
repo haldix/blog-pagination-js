@@ -9,7 +9,11 @@ async function renderBlog(pg, lim, sort) {
     'get'
   );
   console.log('blogData ', blogData);
-  //blogData.posts.results ? (posts = blogData.posts.results) : (posts = []);
+  if (!blogData.results.posts[0]) {
+    blogList.innerHTML = `<h2>No Blog Posts Found!</h2>`;
+    return;
+  }
+
   const { posts, next, previous, limit, page, sortBy } = blogData.results;
 
   let blogItems = '';
@@ -26,26 +30,25 @@ async function renderBlog(pg, lim, sort) {
   });
   blogList.innerHTML = blogItems;
 
-  pagination.innerHTML = '';
+  document.querySelectorAll('.btn-pagination').forEach(btn => {
+    btn.classList.remove('show');
+  });
+
   if (previous) {
-    pagination.innerHTML += `<button id="btn-previous" class="btn-pagination">
-      Show Previous
-    </button>`;
-    document.querySelector('#btn-previous').addEventListener('click', () => {
-      console.log('prev btn clicked');
+    const btnPrev = document.querySelector('#btn-previous');
+    btnPrev.classList.add('show');
+    btnPrev.addEventListener('click', () => {
       renderBlog(previous.page, limit, sortBy);
     });
   }
-
-  // if (next) {
-  //   pagination.innerHTML += `<button id="btn-next" class="btn-pagination">
-  //   Show Next
-  // </button>`;
-  //   document.querySelector('#btn-next').addEventListener('click', () => {
-  //     console.log('next btn clicked');
-  //     renderBlog(next.page, limit, sortBy);
-  //   });
-  // }
+  if (next) {
+    const btnNext = document.querySelector('#btn-next');
+    btnNext.classList.add('show');
+    btnNext.addEventListener('click', () => {
+      renderBlog(next.page, limit, sortBy);
+    });
+  }
 }
 
-renderBlog(5, 2, '-date');
+// Settings for page, limit, sort
+renderBlog(1, 2, '-date');
