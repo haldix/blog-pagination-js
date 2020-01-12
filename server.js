@@ -1,6 +1,7 @@
 const express = require('express');
 const postRoutes = require('./routes');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
 mongoose.connect('mongodb://localhost/blog', {
   useNewUrlParser: true,
@@ -16,7 +17,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(morgan('dev'));
 app.use(express.static(`${__dirname}/public`));
 
 app.use('/posts', postRoutes);

@@ -64,3 +64,10 @@ li:last-child {
 .show {
   display: inline-block;
 }
+
+/* FORM */
+
+.container {
+  width: 80vw;
+  padding: 2rem;
+}

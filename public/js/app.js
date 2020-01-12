@@ -2,6 +2,8 @@
 
 const blogList = document.querySelector('.blogList');
 const pagination = document.querySelector('.pagination');
+const btnNext = document.querySelector('#btn-next');
+const btnPrev = document.querySelector('#btn-previous');
 
 async function renderBlog(pg, lim, sort) {
   let blogData = await fetchData(
@@ -9,7 +11,7 @@ async function renderBlog(pg, lim, sort) {
     'get'
   );
   console.log('blogData ', blogData);
-  if (!blogData.results.posts[0]) {
+  if (!blogData) {
     blogList.innerHTML = `<h2>No Blog Posts Found!</h2>`;
     return;
   }
@@ -21,7 +23,7 @@ async function renderBlog(pg, lim, sort) {
     return (blogItems += `<li>
       <h3>${post.title}</h3>
       <p class="blog-date">
-        ${post.date}
+        ${moment(post.date).format('MMMM Do YYYY')}
       </p>
       <p class="blog-text clearfix">
         ${post.content}
@@ -32,12 +34,15 @@ async function renderBlog(pg, lim, sort) {
 
   document.querySelectorAll('.btn-pagination').forEach(btn => {
     btn.classList.remove('show');
+    btn.disabled = false;
   });
 
   if (previous) {
     const btnPrev = document.querySelector('#btn-previous');
     btnPrev.classList.add('show');
     btnPrev.addEventListener('click', () => {
+      btnPrev.disabled = true;
+      console.log('PREV RUN');
       renderBlog(previous.page, limit, sortBy);
     });
   }
@@ -45,6 +50,9 @@ async function renderBlog(pg, lim, sort) {
     const btnNext = document.querySelector('#btn-next');
     btnNext.classList.add('show');
     btnNext.addEventListener('click', () => {
+      btnNext.disabled = true;
+      console.log('NEXT RUN');
+
       renderBlog(next.page, limit, sortBy);
     });
   }
